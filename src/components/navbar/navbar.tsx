@@ -1,12 +1,15 @@
+import { menuList } from './navbarMenuConfig';
 import NavbarLogo from './navbarlogo';
+import Navlink from './navlink';
 import styled from 'styled-components';
 
 const LogoDiv = styled.div`
   height: 100%;
-  width: 5%;
+  width: 64px;
   margin: 0px;
   padding: 10px;
-  display: inline-block
+  display: inline-block;
+  position: relative;
   padding: 10px;
   text-align: center;
   justify-content: center;
@@ -16,7 +19,7 @@ const LogoDiv = styled.div`
 
 const ParentDiv = styled.div`
   background-color: white;
-  height: 50px;
+  height: 64px;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -25,6 +28,14 @@ const ParentDiv = styled.div`
 `;
 
 const ListDiv = styled.div`
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  align-item: center;
+`;
+
+const RightDiv = styled.div`
+  height: 100%;
   text-align: center;
   justify-content: center;
   align-item: center;
@@ -38,12 +49,9 @@ export default function Navbar() {
           <NavbarLogo />
         </LogoDiv>
         <ListDiv>
-          <ul>
-            <li>hi</li>
-            <li>as</li>
-          </ul>
-          <div>to dispaly menu</div>
+          <Navlink menu={menuList} />
         </ListDiv>
+        <RightDiv></RightDiv>
       </ParentDiv>
     </nav>
   );
