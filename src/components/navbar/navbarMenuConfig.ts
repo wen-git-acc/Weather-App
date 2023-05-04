@@ -1,6 +1,6 @@
 import { submenu, menuItem } from './navbarTypeConfig';
 
-const favouritesSubMenu: submenu[] = [
+export const favouritesSubMenu: submenu[] = [
   {
     headerName: 'Location',
     submenuList: [
@@ -38,9 +38,9 @@ export const menuList: menuItem[] = [
   },
   {
     name: 'About',
-    subMenu: false,
+    subMenu: true,
     link: '/about',
-    subLink: [],
+    subLink: favouritesSubMenu,
   },
   {
     name: 'Weather',
