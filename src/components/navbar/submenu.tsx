@@ -10,9 +10,12 @@ type PropsType = {
 
 const SubmenuParentDiv = styled.div`
   ${() => ListLi}:hover & {
-    display: block;
+    opacity: 1;
+    visibility: visible;
   }
-  display: none;
+  opacity: 0;
+  display: hiddem;
+  transition: opacity 0.6s ease-in-out;
 `;
 
 const SubmenuPointerToMain = styled.div`
@@ -49,7 +52,10 @@ export default function Submenu({ submenu }: PropsType) {
               </Heading>
               {item.submenuList.map((item) => {
                 return (
-                  <Link href={item.link} className="hover:bg-slate-200">
+                  <Link
+                    href={item.link}
+                    className="hover:bg-slate-200 rounded-md p-1 "
+                  >
                     {item.name}
                   </Link>
                 );

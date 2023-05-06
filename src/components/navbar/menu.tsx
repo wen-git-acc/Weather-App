@@ -18,7 +18,7 @@ const ListUL = styled.ul`
   height: 100%;
   padding: 5;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
 `;
 
 const ReverseTriangle = styled.div`
@@ -35,6 +35,7 @@ export const ListLi = styled.li`
   position: relative;
   padding: 6px;
   border-radius: 6px;
+  transition: background-color 0.5s linear;
   &:hover {
     background-color: ${menuItemColorOnHover};
   }
@@ -55,19 +56,27 @@ const MenuItemDiv = styled.div`
 //   }
 // `;
 
+const PartitionBar = styled.div`
+  background-color: rgb(210, 210, 210);
+  height: 25px;
+  width: 1px;
+`;
 export default function Menu({ menu }: PropsType) {
   return (
     <ListUL>
-      {menu.map((item) => {
+      {menu.map((item, index) => {
         return (
-          <ListLi>
-            {!item.subMenu && <Link href={item.link}>{item.name}</Link>}
-            <MenuItemDiv>
-              {item.subMenu && <div>{item.name}</div>}
-              {item.subMenu && <ReverseTriangle />}
-            </MenuItemDiv>
-            {item.subMenu && <Submenu submenu={item.subLink} />}
-          </ListLi>
+          <>
+            {index !== 0 && <PartitionBar></PartitionBar>}
+            <ListLi>
+              {!item.subMenu && <Link href={item.link}>{item.name}</Link>}
+              <MenuItemDiv>
+                {item.subMenu && <div>{item.name}</div>}
+                {item.subMenu && <ReverseTriangle />}
+              </MenuItemDiv>
+              {item.subMenu && <Submenu submenu={item.subLink} />}
+            </ListLi>
+          </>
         );
       })}
     </ListUL>
