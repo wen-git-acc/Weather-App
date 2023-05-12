@@ -23,5 +23,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-    background-attachment: fixed;
+;
+  position: fixed;
+  width: 100vw
 }

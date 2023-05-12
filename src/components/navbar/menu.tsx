@@ -1,7 +1,8 @@
 import { menuList } from './navbarMenuConfig';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Submenu from './submenu';
+import Submenu, { SubmenuParentDiv, SubmenuPointerToMain } from './submenu';
+
 type menuitemType = typeof menuList;
 
 type PropsType = {
@@ -10,15 +11,17 @@ type PropsType = {
 
 const menuItemColorOnHover: string = '#e2e8f0';
 
-const Button = styled.button``;
-
 const ListUL = styled.ul`
   display: flex;
   width: 100%;
   height: 100%;
-  padding: 5;
   align-items: center;
-  gap: 15px;
+
+  flex-direction: row;
+  @media (max-width: 640px) {
+    flex-direction: column;
+    background-color: #f5f5f4;
+  }
 `;
 
 const ReverseTriangle = styled.div`
@@ -44,11 +47,17 @@ export const ListLi = styled.li`
     margin-top: 10px;
   }
 `;
+// &:hover ~ ${SubmenuParentDiv} {
+//   opacity: 1;
+//   visibility: visible;
+// }
 
 const MenuItemDiv = styled.div`
   display: flex;
   flex-direction: row;
   gap: 3px;
+  margin: auto;
+  text-align: center;
 `;
 // const Example = styled.div`
 //   ${ListLi}:hover & {
@@ -60,23 +69,43 @@ const PartitionBar = styled.div`
   background-color: rgb(210, 210, 210);
   height: 25px;
   width: 1px;
+  margin-left: 5px;
+  margin-right: 5px;
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+
+export const ListDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 export default function Menu({ menu }: PropsType) {
   return (
     <ListUL>
       {menu.map((item, index) => {
         return (
-          <>
-            {index !== 0 && <PartitionBar></PartitionBar>}
+          <ListDiv key={index}>
+            {index !== 0 && <PartitionBar />}
             <ListLi>
               {!item.subMenu && <Link href={item.link}>{item.name}</Link>}
               <MenuItemDiv>
                 {item.subMenu && <div>{item.name}</div>}
                 {item.subMenu && <ReverseTriangle />}
               </MenuItemDiv>
-              {item.subMenu && <Submenu submenu={item.subLink} />}
+              {item.subMenu && (
+                <div className="absolute left-1/2 -translate-x-1/2 w-28 items-center hidden sm:block">
+                  <SubmenuPointerToMain />
+                </div>
+              )}
             </ListLi>
-          </>
+            {item.subMenu && <Submenu submenu={item.subLink} />}
+          </ListDiv>
         );
       })}
     </ListUL>

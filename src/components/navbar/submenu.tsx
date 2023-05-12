@@ -1,6 +1,6 @@
 import { favouritesSubMenu } from './navbarMenuConfig';
 import styled from 'styled-components';
-import { ListLi } from './menu';
+import { ListLi, ListDiv } from './menu';
 import Link from 'next/link';
 type submenuType = typeof favouritesSubMenu;
 
@@ -8,17 +8,30 @@ type PropsType = {
   submenu: submenuType;
 };
 
-const SubmenuParentDiv = styled.div`
-  ${() => ListLi}:hover & {
-    opacity: 1;
-    visibility: visible;
-  }
+export const SubmenuParentDiv = styled.div`
   opacity: 0;
-  display: hiddem;
-  transition: opacity 0.6s ease-in-out;
+  visibility: hidden;
+  transition: max-height 0.6s linear, opacity 0.6s ease-in-out;
+
+  ${() => ListDiv}:hover & {
+    visibility: visible;
+    opacity: 1;
+  }
+  @media (max-width: 640px) {
+    max-height: 0;
+
+    ${() => ListDiv}:hover & {
+      max-height: 1000px;
+    }
+  }
 `;
 
-const SubmenuPointerToMain = styled.div`
+// example if want hover based on parent component
+// ${()=> ListLi}:hover &{
+
+// }
+
+export const SubmenuPointerToMain = styled.div`
   margin-top: 32px;
   margin-left: auto;
   margin-right: auto;
@@ -26,6 +39,13 @@ const SubmenuPointerToMain = styled.div`
   width: 10px;
   height: 10px;
   transform: rotate(45deg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease-in-out;
+  ${() => ListDiv}:hover & {
+    visibility: visible;
+    opacity: 1;
+  }
 `;
 
 const SubmenuItem = styled.div`
@@ -38,23 +58,25 @@ const Heading = styled.h1``;
 export default function Submenu({ submenu }: PropsType) {
   return (
     <SubmenuParentDiv>
-      <div className="absolute left-1/2 -translate-x-1/2 w-28 items-center">
+      {/* <div className="absolute left-1/2 -translate-x-1/2 w-28 items-center hidden sm:block">
         <SubmenuPointerToMain />
-      </div>
-      <div className="fixed flex flex-wrap top-20 gap-6 p-2 rounded-md w-[31rem] float-left -translate-x-1/2 left-1/2 bg-white">
-        {submenu.map((item) => {
+      </div> */}
+      <div className="static sm:fixed sm:flex sm:flex-wrap top-20 gap-6 p-2 rounded-md w-full sm:w-[31rem] sm:float-left sm:-translate-x-1/2 sm:left-1/2 sm:bg-white">
+        <div className="sm:hidden h-1 w-80 m-auto bg-white"></div>
+        {submenu.map((item, index) => {
           return (
-            <SubmenuItem>
+            <SubmenuItem key={index}>
               <Heading>
                 <b>
                   <u>{item.headerName}</u>
                 </b>
               </Heading>
-              {item.submenuList.map((item) => {
+              {item.submenuList.map((item, index) => {
                 return (
                   <Link
                     href={item.link}
                     className="hover:bg-slate-200 rounded-md p-1 "
+                    key={index}
                   >
                     {item.name}
                   </Link>

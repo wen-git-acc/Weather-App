@@ -16,3 +16,7 @@ export type menuItem = {
   link: string;
   subLink: submenu[];
 };
+
+export type MobileListDivProps = {
+  isMenuTriggered: boolean;
+};
