@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
-import { geolocationOptionsType, locationType } from './typeConfig';
-
-const geolocationOptions: geolocationOptionsType = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
+import { locationType } from './typeConfig';
+import { getUserLocation } from './locationHandler';
 
 export default function WeatherHome() {
   const [location, setLocation] = useState<locationType>({
@@ -13,31 +8,48 @@ export default function WeatherHome() {
     long: 0,
   });
 
-  function successGeolocation(pos: GeolocationPosition) {
-    const crd = pos.coords;
-    console.log(pos);
-
-    setLocation((prevLocation) => ({
-      ...prevLocation,
-      lat: crd.latitude,
-      long: crd.longitude,
-    }));
+  async function Testing2(
+    data: GeolocationPosition,
+  ): Promise<GeolocationCoordinates> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const tryingdata: GeolocationCoordinates = data.coords;
+        resolve(tryingdata);
+      }, 5000);
+    });
+  }
+  async function Testing() {
+    try {
+      const positionTest: GeolocationPosition = await getUserLocation();
+      console.log('Hiaaa00');
+      const test2data = await Testing2(positionTest);
+      console.log(test2data);
+    } catch (err) {}
   }
 
-  function errorGeolocation(err: GeolocationPositionError) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      return navigator.geolocation.getCurrentPosition(
-        successGeolocation,
-        errorGeolocation,
-        geolocationOptions,
-      );
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     getUserLocation()
+  //       .then((position: GeolocationPosition) => {
+  //         const coordinate = position.coords;
+  //         setLocation((prevLocation) => {
+  //           return {
+  //             ...prevLocation,
+  //             lat: coordinate.latitude,
+  //             long: coordinate.longitude,
+  //           };
+  //         });
+  //       })
+  //       .catch((err: GeolocationPositionError) => {
+  //         console.warn(`ERROR(${err.code}): ${err.message}`);
+  //       });
+  //   } else {
+  //     console.warn('Browser does not support geolocation api');
+  //   }
+  // }, []);
+  Testing();
+  const testing = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
+  console.log(testing);
   return (
     <div>
       <div>{location.lat}</div>
