@@ -18,19 +18,7 @@ const LogoDiv = styled.div`
   justify-content: center;
   cursor: crosshair;
   background-color: blue;
-`;
-
-const ParentDiv = styled.div`
-  background-color: white;
-  height: 64px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 0px;
-  @media (max-width: 640px) {
-    justify-content: space-between;
-  }
+  z-index: 50;
 `;
 
 const ListDiv = styled.div`
@@ -79,6 +67,21 @@ const MobileListDiv = styled.div<MobileListDivProps>`
   }
 `;
 
+const NavBar = styled.nav`
+  position: fixed;
+  background-color: white;
+  height: 64px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0px;
+  z-index: 50;
+  @media (max-width: 640px) {
+    justify-content: space-between;
+  }
+`;
+
 // left: ${(props) => (props.isMenuTriggered ? '50%' : '-100%')};
 export default function Navbar() {
   const [isMenuTrigger, setMenuTrigger] = useState<boolean>(false);
@@ -89,21 +92,19 @@ export default function Navbar() {
     setMenuTrigger((prev) => !prev);
   }
   return (
-    <nav>
-      <ParentDiv>
-        <LogoDiv>
-          <NavbarLogo />
-        </LogoDiv>
-        <ListDiv>
-          <Menu menu={menuList} />
-        </ListDiv>
-        <MobileListDiv isMenuTriggered={isMenuTrigger}>
-          <Menu menu={menuList} />
-        </MobileListDiv>
-        <MenuIconDiv onClick={menuTriggerClick}>
-          <HamburgerButton isMenuTrigger={isMenuTrigger} />
-        </MenuIconDiv>
-      </ParentDiv>
-    </nav>
+    <NavBar>
+      <LogoDiv>
+        <NavbarLogo />
+      </LogoDiv>
+      <ListDiv>
+        <Menu menu={menuList} />
+      </ListDiv>
+      <MobileListDiv isMenuTriggered={isMenuTrigger}>
+        <Menu menu={menuList} />
+      </MobileListDiv>
+      <MenuIconDiv onClick={menuTriggerClick}>
+        <HamburgerButton isMenuTrigger={isMenuTrigger} />
+      </MenuIconDiv>
+    </NavBar>
   );
 }
