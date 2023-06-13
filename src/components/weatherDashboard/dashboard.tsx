@@ -7,8 +7,10 @@ import HourlySummaryDisplay from './hourlySummaryDisplay';
 import DaySummaryDisplay from './daySummaryDisplay';
 import {
   currentDayDataType,
+  forecastDayDataType,
   weatherLocationType,
 } from '@/pages/weather/weatherDataType';
+import { epochTimeToDateTime, weatherDataSorting } from './weatherHandler';
 const positionOfDashboardFromTop: string = '20vh';
 
 export const dashBoardElementBorderRadius: string = '30px';
@@ -18,8 +20,8 @@ const DashBoardDiv = styled.div`
   top: ${positionOfDashboardFromTop};
   margin: 10px;
   padding: 10px;
-  min-height: 1000px;
-  min-width: 1000px;
+  height: 1000px;
+  min-width: 1500px;
   width: 1500px;
   background-color: rgb(255, 255, 255, 0.5);
   border-radius: ${dashBoardElementBorderRadius};
@@ -55,24 +57,34 @@ export function WeatherDashboard() {
   const { forWeatherData } = useContext(WeatherContext);
   const { weatherData } = forWeatherData;
 
-  const weatherLocation: weatherLocationType = weatherData.location;
-  const currentDayData: currentDayDataType = weatherData.current;
-  const currentDayTime: number = currentDayData.last_updated_epoch;
+  const selectedWeatherData = weatherData.selectedCurrentDayInformation;
+  const forecastData: forecastDayDataType = weatherData.forecastDayInformation;
+  const currentTimeEpoch: number =
+    weatherData.selectedCurrentDayInformation.epochTime;
+  const sortedWeatherData = weatherDataSorting(
+    selectedWeatherData,
+    forecastData,
+  );
 
   return (
     <DashBoardDiv>
       <SearchBar />
-      {Object.entries(weatherData).length != 0 && (
+      {weatherData.isWeatherDataReceived && (
         <ContentSectionDiv>
           <CurrentDaySectionDiv>
-            <CurrentDaySummaryDisplay
-              currentDayData={currentDayData}
-              weatherLocation={weatherLocation}
+            <CurrentDaySummaryDisplay selectedDayData={selectedWeatherData} />
+            <HourlySummaryDisplay
+              hourlyDataArr={sortedWeatherData.forecastHourlyDataArr}
+              currentTimeEpoch={currentTimeEpoch}
             />
-            <HourlySummaryDisplay />
           </CurrentDaySectionDiv>
           <ForecastDaySectionDiv>
-            <DaySummaryDisplay />
+            <DaySummaryDisplay
+              forecastDayDataArr={sortedWeatherData.forecastDayDataArr}
+              currentTimeEpoch={currentTimeEpoch}
+              currentDayInformation={weatherData.currentDayInformation}
+              locationData={weatherData.locationInformation}
+            />
           </ForecastDaySectionDiv>
         </ContentSectionDiv>
       )}

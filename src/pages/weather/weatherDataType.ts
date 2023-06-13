@@ -3741,10 +3741,38 @@ export const weatherForecastData = {
   },
 };
 
-export type weatherDataType = typeof weatherForecastData;
+export type initialWeatherDataType = typeof weatherForecastData;
 
-export type weatherLocationType = weatherDataType['location'];
+export type weatherLocationType = initialWeatherDataType['location'];
 
-export type currentDayDataType = weatherDataType['current'];
+export type currentDayDataType = initialWeatherDataType['current'];
 
-export type forecastDayDataType = weatherDataType['forecast'];
+export type forecastDayDataType = initialWeatherDataType['forecast'];
+
+export type selectedForecastDayDataType = forecastDayDataType['forecastday'][0];
+
+export type weatherDataType = {
+  locationInformation: weatherLocationType;
+  currentDayInformation: currentDayDataType;
+  forecastDayInformation: forecastDayDataType;
+  selectedCurrentDayInformation: {
+    imageIconUrl: string;
+    cityName: string;
+    countryName: string;
+    weatherDescription: string;
+    temperature_C: number;
+    temperature_F: number;
+    epochTime: number;
+    conventionalTime: {
+      date: string;
+      time: string;
+    };
+  };
+  isWeatherDataReceived: boolean;
+};
+
+export type selectedCurrentDayInformationType =
+  weatherDataType['selectedCurrentDayInformation'];
+
+export type weatherHourlyDataType =
+  forecastDayDataType['forecastday'][0]['hour'];

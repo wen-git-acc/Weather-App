@@ -1,11 +1,20 @@
 import { useContext, useEffect, useState } from 'react';
-import { locationType } from './typeConfig';
-import { getUserLocation } from './locationHandler';
+import {
+  locationType,
+  sortedCitiesCountriesDataType,
+  citiesCountriesDataType,
+} from './typeConfig';
+import { getUserLocation, locationExcelReader } from './locationHandler';
 import styled from 'styled-components';
 import skycloud from './picture/skycloud.gif';
 import { WeatherDashboard } from '@/components/weatherDashboard/dashboard';
-import { weatherDataType, weatherForecastData } from './weatherDataType';
+import { initialWeatherDataType, weatherForecastData } from './weatherDataType';
 import { WeatherContext } from '@/context/weatherContext/weatherContext';
+import axios from 'axios';
+import { comment } from 'postcss';
+import * as XLSX from 'xlsx';
+import { GetStaticProps, InferGetServerSidePropsType } from 'next';
+import path from 'path';
 
 const MainDiv = styled.div`
   position: relative;
@@ -32,26 +41,63 @@ const ContentDiv = styled.div`
   justify-content: center;
 `;
 
-const TestButton = styled.button`
-  position: absolute;
-  top: 70px;
-  left: 50%;
-  height: 100px;
-  width: 100px;
-  background-color: red;
-  cursor: crosshair;
-  z-index: 1;
-`;
-export default function WeatherHome() {
+const citiesCountriesExcelFilePath = './countriesandcities.xlsx';
+export const getStaticProps: GetStaticProps<{
+  countriesCitiesDataArr: citiesCountriesDataType;
+}> = async () => {
+  const dir = 'countriesandcities.xlsx';
+  const dirCom = path.resolve('./public');
+
+  const absolute = path.join(dirCom, 'countriesandcities.xlsx');
+  const res = XLSX.readFile(absolute);
+  const wsName = res.SheetNames[0];
+  const ws = res.Sheets[wsName];
+  const data: citiesCountriesDataType = XLSX.utils.sheet_to_json(
+    ws,
+  ) as citiesCountriesDataType;
+
+  // console.log(res);
+
+  let countriesCitiesDataArr = data.map((info) => {
+    let newObject = {
+      country: info.country,
+      city: info.city,
+      lat: info.lat,
+      lng: info.lng,
+    };
+    return newObject;
+  });
+
+  countriesCitiesDataArr = [
+    {
+      country: 'asdsa',
+      city: 'asd',
+      lat: 12,
+      lng: 12,
+    },
+  ];
+
+  return { props: { countriesCitiesDataArr } };
+};
+
+export default function WeatherHome({
+  countriesCitiesDataArr,
+}: InferGetServerSidePropsType<typeof getStaticProps>) {
+  console.log(countriesCitiesDataArr);
+  const weatherApiUrl: string = process.env
+    .NEXT_PUBLIC_WEATHER_API_URL as string;
+
   // const [location, setLocation] = useState<locationType>({
   //   lat: 0,
   //   long: 0,
   // });
   // const [weatherData, setWeatherData] = useState({} as weatherDataType);
 
-  const { forLocation, forWeatherData } = useContext(WeatherContext);
+  const { forLocation, forWeatherData, forCityCountryData } =
+    useContext(WeatherContext);
   const { location, setLocation } = forLocation;
   const { weatherData, setWeatherData } = forWeatherData;
+  const { setCitiesCountriesData } = forCityCountryData;
   // const [nice, setNice] = useState(0);
   // const [testing, setTesting] = useState<weatherDataType>({});
   // async function Testing2(
@@ -86,8 +132,11 @@ export default function WeatherHome() {
   // }
 
   useEffect(() => {
-    async function displayUserLocationData() {
+    async function weatherDataInitialization() {
       try {
+        const citiesCountriesDataArr = await locationExcelReader(
+          citiesCountriesExcelFilePath,
+        );
         const position: GeolocationPosition = await getUserLocation();
         const coordinate: GeolocationCoordinates = position.coords;
         //TODO: pass coordinate to weather api to get weather data, for now use dummy data
@@ -96,10 +145,38 @@ export default function WeatherHome() {
           lat: coordinate.latitude,
           long: coordinate.longitude,
         }));
-        const weatherDataReceived = weatherForecastData as weatherDataType;
+        setCitiesCountriesData((prevData) => [
+          ...prevData,
+          ...citiesCountriesDataArr,
+        ]);
+
+        // const res = await axios.get(
+        //   `${weatherApiUrl}&q=${coordinate.latitude},${coordinate.longitude}`,
+        // );
+        // const weatherDataReceived = res.data as initialWeatherDataType;
+
+        const weatherDataReceived =
+          weatherForecastData as initialWeatherDataType;
+
         setWeatherData((prevWeatherData) => ({
           ...prevWeatherData,
-          ...weatherDataReceived,
+          locationInformation: weatherDataReceived.location,
+          currentDayInformation: weatherDataReceived.current,
+          forecastDayInformation: weatherDataReceived.forecast,
+          selectedCurrentDayInformation: {
+            imageIconUrl: weatherDataReceived.current.condition.icon,
+            cityName: weatherDataReceived.location.name,
+            countryName: weatherDataReceived.location.country,
+            weatherDescription: weatherDataReceived.current.condition.text,
+            temperature_C: weatherDataReceived.current.temp_c,
+            temperature_F: weatherDataReceived.current.temp_f,
+            epochTime: weatherDataReceived.location.localtime_epoch,
+            conventionalTime: {
+              date: '',
+              time: '',
+            },
+          },
+          isWeatherDataReceived: true,
         }));
       } catch (error: unknown) {
         let message = 'Unknown Error';
@@ -109,7 +186,7 @@ export default function WeatherHome() {
     }
 
     if (navigator.geolocation) {
-      displayUserLocationData();
+      weatherDataInitialization();
       // getUserLocation()
       //   .then((position: GeolocationPosition) => {
       //     const coordinate = position.coords;
@@ -135,7 +212,7 @@ export default function WeatherHome() {
       <div className="absolute top-24">{location.lat}</div>
       {/* <TestButton onClick={forTestButton}>asd</TestButton> */}
       <ContentDiv>
-        {Object.entries(weatherData).length != 0 && <WeatherDashboard />}
+        {weatherData.isWeatherDataReceived && <WeatherDashboard />}
       </ContentDiv>
     </MainDiv>
   );

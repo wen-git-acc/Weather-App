@@ -1,17 +1,27 @@
 import {
   currentDayDataType,
+  selectedCurrentDayInformationType,
   weatherLocationType,
 } from '@/pages/weather/weatherDataType';
 import styled, { keyframes } from 'styled-components';
 import Image from 'next/image';
 import { dashBoardElementBorderRadius } from './dashboard';
 import { epochTimeToDateTime } from './weatherHandler';
+import { McLaren, Playfair_Display } from 'next/font/google';
 type PropType = {
-  currentDayData: currentDayDataType;
-  weatherLocation: weatherLocationType;
+  selectedDayData: selectedCurrentDayInformationType;
 };
 
-const weatherImageSize: number = 400;
+const playfairfont = Playfair_Display({
+  subsets: ['latin'],
+  weight: '400',
+});
+
+const mcLarenFont = McLaren({
+  subsets: ['latin'],
+  weight: '400',
+});
+const weatherImageSize: number = 300;
 
 const IconAnimation = keyframes`
 0% {
@@ -40,6 +50,8 @@ const MainDiv = styled.div`
 const IconDiv = styled.div`
   display: flex;
   height: 100%;
+  flex-direction: column;
+  padding-top: ;
   width: 50%;
   position: relative;
   align-items: center;
@@ -53,60 +65,84 @@ const ContentDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 2%;
+  // background-color: rgb(5, 10, 48, 0.9);
+  background-color: rgb(255, 255, 255, 0.6);
+  border-top-right-radius: ${() => dashBoardElementBorderRadius};
+  border-radius: ${() => dashBoardElementBorderRadius};
 `;
 
 const TemperatureDiv = styled.div`
   position: relative;
-  font-size: 100px;
-  top: 5%;
-  color: #dcd9cd;
+  font-size: 70px;
+  margin-top: 15%;
+  color: black;
+  margin-left: auto;
+  margin-right: auto;
+  left: 3%;
+  font-weight: bold;
 `;
 
 const WeatherDescriptionDiv = styled.div`
+  position: relative;
   font-size: 20px;
+
+  font-weight: bold;
 `;
 
 const LocationNameDiv = styled.div`
-  font-size: 25px;
+  font-size: 15px;
   position: relative;
-  top: 5%;
+  top: -2%;
+  font-weight: bold;
+  color: grey;
 `;
 const TimeDateDiv = styled.div`
-  font-size: 30px;
+  font-size: 25px;
   position: relative;
-  top: 10%;
+  font-weight: bold;
+  color: black;
+  top: 5%;
 `;
 export default function CurrentDaySummaryDisplay({
-  currentDayData,
-  weatherLocation,
+  selectedDayData,
 }: PropType) {
-  console.log(currentDayData);
-  const imageTestingUrl = currentDayData.condition.icon;
-  console.log(imageTestingUrl);
-  const cityName = weatherLocation.name;
-  const countryName = weatherLocation.country;
-  const weatherDescription = currentDayData.condition.text;
-  const currentTemperatureCelsius = currentDayData.temp_c;
-  const currentTimeEpoch = currentDayData.last_updated_epoch;
-  const conventionalTime = epochTimeToDateTime(currentTimeEpoch);
-  const currentDate = conventionalTime.date;
-  const currentTime = conventionalTime.time;
+  const imageUrl = selectedDayData.imageIconUrl;
+  const cityName = selectedDayData.cityName;
+  const countryName = selectedDayData.countryName;
+  const weatherDescription = selectedDayData.weatherDescription;
+  const currentTemperatureCelsius = selectedDayData.temperature_C;
+  const currentTemperatureF = selectedDayData.temperature_F;
+  const currentTimeEpoch = selectedDayData.epochTime;
+  const { date, time } = epochTimeToDateTime(currentTimeEpoch);
+  selectedDayData.conventionalTime = {
+    date: date,
+    time: time,
+  };
 
   return (
     <MainDiv>
       <IconDiv>
+        <WeatherDescriptionDiv className={mcLarenFont.className}>
+          {weatherDescription}
+        </WeatherDescriptionDiv>
         <Image
-          src={'https:' + imageTestingUrl}
+          src={'https:' + imageUrl}
           alt="Image"
           height={weatherImageSize}
           width={weatherImageSize}
         />
       </IconDiv>
       <ContentDiv>
-        <TemperatureDiv>{currentTemperatureCelsius}&deg;</TemperatureDiv>
-        <WeatherDescriptionDiv>{weatherDescription}</WeatherDescriptionDiv>
-        <LocationNameDiv>{cityName + ', ' + countryName}</LocationNameDiv>
-        <TimeDateDiv>{currentDate + ' ' + currentTime}</TimeDateDiv>
+        <TemperatureDiv className={mcLarenFont.className}>
+          {currentTemperatureCelsius}&deg;C/{currentTemperatureF}&deg;F
+        </TemperatureDiv>
+        <LocationNameDiv className={mcLarenFont.className}>
+          {cityName + ', ' + countryName}
+        </LocationNameDiv>
+        <TimeDateDiv className={mcLarenFont.className}>
+          {date + ' ' + time}
+        </TimeDateDiv>
       </ContentDiv>
     </MainDiv>
   );
