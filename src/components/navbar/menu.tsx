@@ -1,7 +1,7 @@
 import { menuList } from './navbarMenuConfig';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Submenu, { SubmenuParentDiv, SubmenuPointerToMain } from './submenu';
+import Submenu, { SubmenuPointerToMain } from './submenu';
 
 type menuitemType = typeof menuList;
 
@@ -9,7 +9,7 @@ type PropsType = {
   menu: menuitemType;
 };
 
-const menuItemColorOnHover: string = '#e2e8f0';
+const menuItemColorOnHover = '#e2e8f0';
 
 const ListUL = styled.ul`
   display: flex;
@@ -85,6 +85,18 @@ export const ListDiv = styled.div`
     flex-direction: column;
   }
 `;
+
+const SubMenuPointerDiv = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7rem;
+  align-items: center;
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+
 export default function Menu({ menu }: PropsType) {
   return (
     <ListUL>
@@ -99,9 +111,9 @@ export default function Menu({ menu }: PropsType) {
                 {item.subMenu && <ReverseTriangle />}
               </MenuItemDiv>
               {item.subMenu && (
-                <div className="absolute left-1/2 -translate-x-1/2 w-28 items-center hidden sm:block">
+                <SubMenuPointerDiv>
                   <SubmenuPointerToMain />
-                </div>
+                </SubMenuPointerDiv>
               )}
             </ListLi>
             {item.subMenu && <Submenu submenu={item.subLink} />}

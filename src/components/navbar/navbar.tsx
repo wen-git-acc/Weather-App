@@ -88,7 +88,6 @@ export default function Navbar() {
 
   function menuTriggerClick(e: React.MouseEvent<HTMLInputElement>) {
     e.preventDefault();
-    console.log(isMenuTrigger);
     setMenuTrigger((prev) => !prev);
   }
   return (

@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { dashBoardElementBorderRadius } from './dashboard';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import {
   keyEventObjType,
   keyEventType,
   sortedCitiesCountriesDataType,
 } from '@/pages/weather/typeConfig';
-import { NumberLiteralType } from 'typescript';
 
 const SearcBarDiv = styled.div`
   height: 5%;
@@ -111,7 +110,7 @@ export function SearchBar() {
     setSearch(e.target.value);
   }
 
-  function handleOnBlurEvent(e: React.FocusEvent<HTMLInputElement>) {
+  function handleOnBlurEvent() {
     setFilteredData([]);
     setUpDownKeyboardActionIndex(-1);
   }
@@ -124,7 +123,6 @@ export function SearchBar() {
       upDownKeyboardActionIndex - 1 >= 0
     ) {
       setUpDownKeyboardActionIndex((prevIndex) => --prevIndex);
-      console.log(upDownKeyboardActionIndex);
       let currentIndex = upDownKeyboardActionIndex;
       const newIndex = --currentIndex;
       const newSearchValue = filteredCitiesCountriesData[newIndex].name;
@@ -136,7 +134,6 @@ export function SearchBar() {
       upDownKeyboardActionIndex < filteredCitiesCountriesData.length - 1
     ) {
       setUpDownKeyboardActionIndex((prevIndex) => ++prevIndex);
-      console.log(upDownKeyboardActionIndex);
       let currentIndex = upDownKeyboardActionIndex;
       const newIndex = ++currentIndex;
       const newSearchValue = filteredCitiesCountriesData[newIndex].name;
@@ -146,7 +143,6 @@ export function SearchBar() {
       keyEventObj.Enter === eventTriggered &&
       filteredCitiesCountriesData.length > 0
     ) {
-      console.log('Enter');
       if (upDownKeyboardActionIndex === -1) {
         const newSearchVaLue = filteredCitiesCountriesData[0].name;
         const latValue = filteredCitiesCountriesData[0].lat;
@@ -162,7 +158,6 @@ export function SearchBar() {
           filteredCitiesCountriesData[upDownKeyboardActionIndex].lat;
         const longValue =
           filteredCitiesCountriesData[upDownKeyboardActionIndex].long;
-        console.log(newSearchValue);
         setNewWeatherData(latValue, longValue);
         setSearch(newSearchValue);
         setFilteredData([]);
@@ -195,7 +190,7 @@ export function SearchBar() {
       </SearchInputDiv>
       <AutoSuggestionDiv>
         {filteredCitiesCountriesData.map((data, index) => {
-          let boxHighlight: boolean = false;
+          let boxHighlight = false;
           if (index === upDownKeyboardActionIndex) {
             boxHighlight = !boxHighlight;
           }

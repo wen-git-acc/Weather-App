@@ -21,7 +21,7 @@ type PropType = {
   locationData: weatherLocationType;
 };
 
-const weatherImageSize: number = 150;
+const weatherImageSize = 150;
 const mcLarenFont = McLaren({
   subsets: ['latin'],
   weight: '400',
@@ -130,9 +130,9 @@ export default function DaySummaryDisplay({
   forecastDayDataArr = dayFilterHandler(forecastDayDataArr, date);
   return (
     <MainDiv className={mcLarenFont.className}>
-      <HeadingDiv>Day's Forecast</HeadingDiv>
+      <HeadingDiv>Days Forecast</HeadingDiv>
       <ContentDiv>
-        {forecastDayDataArr.map((forecastDayData) => {
+        {forecastDayDataArr.map((forecastDayData, id) => {
           const weatherDescription = forecastDayData.condition.text;
           const imageUrl = forecastDayData.condition.icon;
           const temperatureC = forecastDayData.temperature_C;
@@ -171,7 +171,7 @@ export default function DaySummaryDisplay({
           }
 
           return (
-            <DisplayDiv onClick={selectionHandler}>
+            <DisplayDiv key={id} onClick={selectionHandler}>
               <IconDiv>
                 <Image
                   src={'https:' + imageUrl}

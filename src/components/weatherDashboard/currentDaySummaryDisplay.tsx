@@ -1,27 +1,18 @@
-import {
-  currentDayDataType,
-  selectedCurrentDayInformationType,
-  weatherLocationType,
-} from '@/pages/weather/weatherDataType';
+import { selectedCurrentDayInformationType } from '@/pages/weather/weatherDataType';
 import styled, { keyframes } from 'styled-components';
 import Image from 'next/image';
 import { dashBoardElementBorderRadius } from './dashboard';
 import { epochTimeToDateTime } from './weatherHandler';
-import { McLaren, Playfair_Display } from 'next/font/google';
+import { McLaren } from 'next/font/google';
 type PropType = {
   selectedDayData: selectedCurrentDayInformationType;
 };
-
-const playfairfont = Playfair_Display({
-  subsets: ['latin'],
-  weight: '400',
-});
 
 const mcLarenFont = McLaren({
   subsets: ['latin'],
   weight: '400',
 });
-const weatherImageSize: number = 300;
+const weatherImageSize = 300;
 
 const IconAnimation = keyframes`
 0% {

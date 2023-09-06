@@ -1,17 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
-import {
-  locationType,
-  sortedCitiesCountriesDataType,
-  citiesCountriesDataType,
-} from './typeConfig';
+import { useContext, useEffect } from 'react';
+import { citiesCountriesDataType } from './typeConfig';
 import { getUserLocation, locationExcelReader } from './locationHandler';
 import styled from 'styled-components';
 import skycloud from './picture/skycloud.gif';
 import { WeatherDashboard } from '@/components/weatherDashboard/dashboard';
-import { initialWeatherDataType, weatherForecastData } from './weatherDataType';
+import { initialWeatherDataType } from './weatherDataType';
 import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import axios from 'axios';
-import { comment } from 'postcss';
 import * as XLSX from 'xlsx';
 import { GetStaticProps, InferGetServerSidePropsType } from 'next';
 import path from 'path';
@@ -45,7 +40,6 @@ const citiesCountriesExcelFilePath = './countriesandcities.xlsx';
 export const getStaticProps: GetStaticProps<{
   countriesCitiesDataArr: citiesCountriesDataType;
 }> = async () => {
-  const dir = 'countriesandcities.xlsx';
   const dirCom = path.resolve('./public');
 
   const absolute = path.join(dirCom, 'countriesandcities.xlsx');
@@ -59,7 +53,7 @@ export const getStaticProps: GetStaticProps<{
   // console.log(res);
 
   let countriesCitiesDataArr = data.map((info) => {
-    let newObject = {
+    const newObject = {
       country: info.country,
       city: info.city,
       lat: info.lat,
@@ -150,13 +144,13 @@ export default function WeatherHome({
           ...citiesCountriesDataArr,
         ]);
 
-        // const res = await axios.get(
-        //   `${weatherApiUrl}&q=${coordinate.latitude},${coordinate.longitude}`,
-        // );
-        // const weatherDataReceived = res.data as initialWeatherDataType;
+        const res = await axios.get(
+          `${weatherApiUrl}&q=${coordinate.latitude},${coordinate.longitude}`,
+        );
+        const weatherDataReceived = res.data as initialWeatherDataType;
 
-        const weatherDataReceived =
-          weatherForecastData as initialWeatherDataType;
+        // const weatherDataReceived =
+        //   weatherForecastData as initialWeatherDataType;
 
         setWeatherData((prevWeatherData) => ({
           ...prevWeatherData,
@@ -180,27 +174,30 @@ export default function WeatherHome({
         }));
       } catch (error: unknown) {
         let message = 'Unknown Error';
-        if (error instanceof Error) message = error.message;
-        else message = String(error);
+        if (error instanceof Error) {
+          message = error.message;
+        } else {
+          message = String(error);
+        }
       }
     }
 
     if (navigator.geolocation) {
       weatherDataInitialization();
-      // getUserLocation()
-      //   .then((position: GeolocationPosition) => {
-      //     const coordinate = position.coords;
-      //     setLocation((prevLocation) => {
-      //       return {
-      //         ...prevLocation,
-      //         lat: coordinate.latitude,
-      //         long: coordinate.longitude,
-      //       };
-      //     });
-      //   })
-      //   .catch((err: GeolocationPositionError) => {
-      //     console.warn(`ERROR(${err.code}): ${err.message}`);
-      //   });
+      getUserLocation()
+        .then((position: GeolocationPosition) => {
+          const coordinate = position.coords;
+          setLocation((prevLocation) => {
+            return {
+              ...prevLocation,
+              lat: coordinate.latitude,
+              long: coordinate.longitude,
+            };
+          });
+        })
+        .catch((err: GeolocationPositionError) => {
+          console.warn(`ERROR(${err.code}): ${err.message}`);
+        });
     } else {
       console.warn('Browser does not support geolocation api');
     }

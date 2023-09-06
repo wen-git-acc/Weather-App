@@ -1,9 +1,6 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { dashBoardElementBorderRadius } from './dashboard';
-import {
-  forecastDayDataType,
-  weatherHourlyDataType,
-} from '@/pages/weather/weatherDataType';
+import { weatherHourlyDataType } from '@/pages/weather/weatherDataType';
 import { epochTimeToDateTime, timeFilterHandler } from './weatherHandler';
 import Image from 'next/image';
 import { McLaren } from 'next/font/google';
@@ -13,7 +10,7 @@ type PropType = {
   currentTimeEpoch: number;
 };
 
-const weatherImageSize: number = 200;
+const weatherImageSize = 200;
 const mcLarenFont = McLaren({
   subsets: ['latin'],
   weight: '400',
@@ -95,16 +92,16 @@ export default function HourlySummaryDisplay({
   hourlyDataArr = timeFilterHandler(hourlyDataArr, currentTimeEpoch);
   return (
     <MainDiv className={mcLarenFont.className}>
-      <HeadingDiv>Hourly's Forecast</HeadingDiv>
+      <HeadingDiv>Hourly&apos;s Forecast</HeadingDiv>
       <ContentDiv>
-        {hourlyDataArr.map((hourlyData) => {
+        {hourlyDataArr.map((hourlyData, id) => {
           const weatherDescription = hourlyData.condition.text;
           const imageUrl = hourlyData.condition.icon;
           const temperatureC = hourlyData.temp_c;
           const temperatureF = hourlyData.temp_f;
           const { time } = epochTimeToDateTime(hourlyData.time_epoch);
           return (
-            <DisplayDiv>
+            <DisplayDiv key={id}>
               <TimeDateDiv>{time}</TimeDateDiv>
               <WeatherDescriptionDiv>
                 {weatherDescription}

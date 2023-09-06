@@ -1,6 +1,6 @@
 import { favouritesSubMenu } from './navbarMenuConfig';
 import styled from 'styled-components';
-import { ListLi, ListDiv } from './menu';
+import { ListDiv } from './menu';
 import Link from 'next/link';
 type submenuType = typeof favouritesSubMenu;
 
@@ -53,7 +53,43 @@ const SubmenuItem = styled.div`
   flex-direction: column;
   margin: 5px;
 `;
+const MobileSubMenuPartition = styled.div`
+  display: none;
+  height: 5px;
+  width: 400px;
+  margin: auto;
+  background-color: white;
 
+  @media (max-width: 640px) {
+    display: block;
+  }
+`;
+
+const SubMenuList = styled.div`
+  background-color: white;
+  top: 80px;
+  gap: 24px;
+  padding: 8px;
+  border-radius: 0.375rem;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  width: 31rem;
+  float: left;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    float: none;
+    position: static;
+    background-color: transparent;
+    left: 0%;
+    gap: 0;
+    transform: translateX(0%);
+  }
+`;
 const Heading = styled.h1``;
 export default function Submenu({ submenu }: PropsType) {
   return (
@@ -61,8 +97,10 @@ export default function Submenu({ submenu }: PropsType) {
       {/* <div className="absolute left-1/2 -translate-x-1/2 w-28 items-center hidden sm:block">
         <SubmenuPointerToMain />
       </div> */}
-      <div className="static sm:fixed sm:flex sm:flex-wrap top-20 gap-6 p-2 rounded-md w-full sm:w-[31rem] sm:float-left sm:-translate-x-1/2 sm:left-1/2 sm:bg-white">
-        <div className="sm:hidden h-1 w-80 m-auto bg-white"></div>
+      {/* <div className="sm:fixed sm:flex sm:flex-wrap top-20 gap-6 p-2 rounded-md w-full sm:w-[31rem] sm:float-left sm:-translate-x-1/2 sm:left-1/2 sm:bg-white"> */}
+      <SubMenuList>
+        {/* <div className="sm:hidden h-1 w-80 m-auto bg-white"></div> */}
+        <MobileSubMenuPartition />
         {submenu.map((item, index) => {
           return (
             <SubmenuItem key={index}>
@@ -85,7 +123,8 @@ export default function Submenu({ submenu }: PropsType) {
             </SubmenuItem>
           );
         })}
-      </div>
+      </SubMenuList>
+      {/* </div> */}
     </SubmenuParentDiv>
   );
 }

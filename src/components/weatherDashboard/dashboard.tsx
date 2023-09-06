@@ -5,16 +5,12 @@ import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import CurrentDaySummaryDisplay from './currentDaySummaryDisplay';
 import HourlySummaryDisplay from './hourlySummaryDisplay';
 import DaySummaryDisplay from './daySummaryDisplay';
-import {
-  currentDayDataType,
-  forecastDayDataType,
-  weatherLocationType,
-} from '@/pages/weather/weatherDataType';
-import { epochTimeToDateTime, weatherDataSorting } from './weatherHandler';
-const positionOfDashboardFromTop: string = '20vh';
+import { forecastDayDataType } from '@/pages/weather/weatherDataType';
+import { weatherDataSorting } from './weatherHandler';
+const positionOfDashboardFromTop = '20vh';
 
-export const dashBoardElementBorderRadius: string = '30px';
-const currentDaySection: string = '70%';
+export const dashBoardElementBorderRadius = '30px';
+const currentDaySection = '70%';
 
 const DashBoardDiv = styled.div`
   top: ${positionOfDashboardFromTop};
@@ -33,7 +29,7 @@ const ContentSectionDiv = styled.div`
   position: relative;
   top: 1%;
   height: 94%;
-  weight: 100%;
+  width: 100%;
   border-radius: ${dashBoardElementBorderRadius};
   display: flex;
 `;
