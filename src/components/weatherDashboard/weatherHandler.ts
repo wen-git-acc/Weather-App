@@ -2,7 +2,7 @@ import {
   forecastDayDataType,
   selectedCurrentDayInformationType,
   weatherHourlyDataType,
-} from '@/pages/weather/weatherDataType';
+} from '@/helper/weatherDataType';
 
 export function epochTimeToDateTime(epochTime: number): {
   date: string;

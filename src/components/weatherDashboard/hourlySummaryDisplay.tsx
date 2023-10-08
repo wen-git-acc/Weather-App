@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { dashBoardElementBorderRadius } from './dashboard';
-import { weatherHourlyDataType } from '@/pages/weather/weatherDataType';
+import { weatherHourlyDataType } from '@/helper/weatherDataType';
 import { epochTimeToDateTime, timeFilterHandler } from './weatherHandler';
 import Image from 'next/image';
 import { McLaren } from 'next/font/google';

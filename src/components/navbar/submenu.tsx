@@ -11,7 +11,7 @@ type PropsType = {
 export const SubmenuParentDiv = styled.div`
   opacity: 0;
   visibility: hidden;
-  transition: max-height 0.6s linear, opacity 0.6s ease-in-out;
+  transition: max-height 0.1s linear, opacity 0.2s ease-in-out;
 
   ${() => ListDiv}:hover & {
     visibility: visible;

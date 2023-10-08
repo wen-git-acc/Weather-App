@@ -1,4 +1,4 @@
-import { reqeustedLocationDataType } from '../typeConfig';
+import { reqeustedLocationDataType } from '../helper/typeConfig';
 import axios from 'axios';
 
 export async function locationSearchRequest(

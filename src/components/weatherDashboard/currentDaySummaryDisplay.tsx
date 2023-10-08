@@ -1,4 +1,4 @@
-import { selectedCurrentDayInformationType } from '@/pages/weather/weatherDataType';
+import { selectedCurrentDayInformationType } from '@/helper/weatherDataType';
 import styled, { keyframes } from 'styled-components';
 import Image from 'next/image';
 import { dashBoardElementBorderRadius } from './dashboard';

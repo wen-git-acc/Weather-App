@@ -58,7 +58,7 @@ const MobileListDiv = styled.div<MobileListDivProps>`
   transition: transform 0.5s linear;
   display: none;
   transform: ${(props) =>
-    props.isMenuTriggered ? 'translateX(0vw)' : 'translateX(-150vw)'};
+    props.isMenuTriggered ? 'translateX(0vw)' : 'translateX(-100vw)'};
 
   background-color: white;
   @media (max-width: 640px) {

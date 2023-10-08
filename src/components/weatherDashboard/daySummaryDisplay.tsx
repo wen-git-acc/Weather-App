@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import {
   currentDayDataType,
   weatherLocationType,
-} from '@/pages/weather/weatherDataType';
+} from '@/helper/weatherDataType';
 
 type PropType = {
   forecastDayDataArr: sortedForecastDayDataType[];

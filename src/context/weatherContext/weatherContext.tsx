@@ -1,11 +1,11 @@
 import {
   locationType,
   sortedCitiesCountriesDataType,
-} from '@/pages/weather/typeConfig';
+} from '@/helper/typeConfig';
 import {
   initialWeatherDataType,
   weatherDataType,
-} from '@/pages/weather/weatherDataType';
+} from '@/helper/weatherDataType';
 import {
   Dispatch,
   PropsWithChildren,

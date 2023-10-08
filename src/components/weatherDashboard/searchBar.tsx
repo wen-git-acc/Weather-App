@@ -6,8 +6,8 @@ import {
   keyEventObjType,
   keyEventType,
   sortedCitiesCountriesDataType,
-} from '@/pages/weather/typeConfig';
-import { locationSearchRequest } from '@/pages/weather/HttpClient/apicall';
+} from '@/helper/typeConfig';
+import { locationSearchRequest } from '@/HttpClient/apicall';
 
 const SearcBarDiv = styled.div`
   height: 5%;

@@ -5,7 +5,7 @@ import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import CurrentDaySummaryDisplay from './currentDaySummaryDisplay';
 import HourlySummaryDisplay from './hourlySummaryDisplay';
 import DaySummaryDisplay from './daySummaryDisplay';
-import { forecastDayDataType } from '@/pages/weather/weatherDataType';
+import { forecastDayDataType } from '@/helper/weatherDataType';
 import { weatherDataSorting } from './weatherHandler';
 const positionOfDashboardFromTop = '20vh';
 

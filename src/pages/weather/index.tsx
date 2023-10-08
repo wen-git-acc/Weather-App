@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
-import { getUserLocation } from './locationHandler';
+import { getUserLocation } from '../../helper/locationHandler';
 import styled from 'styled-components';
-import skycloud from './picture/blackpicture.webp';
+import skycloud from '../../helper/picture/blackpicture.webp';
 import { WeatherDashboard } from '@/components/weatherDashboard/dashboard';
-import { initialWeatherDataType } from './weatherDataType';
+import { initialWeatherDataType } from '../../helper/weatherDataType';
 import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import axios from 'axios';
 

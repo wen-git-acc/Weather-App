@@ -3,7 +3,7 @@ import { MobileListDivProps } from './navbarTypeConfig';
 const HamBurger = styled.button`
   position: absolute;
   top: 3em;
-  right: 20%;
+  right: 10%;
   margin-left: -2em;
   margin-top: -45px;
   width: 2em;
