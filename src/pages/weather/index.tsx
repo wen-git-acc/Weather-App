@@ -42,8 +42,7 @@ export default function WeatherHome() {
   // });
   // const [weatherData, setWeatherData] = useState({} as weatherDataType);
 
-  const { forLocation, forWeatherData, forCityCountryData } =
-    useContext(WeatherContext);
+  const { forLocation, forWeatherData } = useContext(WeatherContext);
   const { location, setLocation } = forLocation;
   const { weatherData, setWeatherData } = forWeatherData;
 

@@ -28,10 +28,19 @@ const ListUL = styled.ul`
 const ReverseTriangle = styled.div`
   width: 0;
   height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 9px solid black;
-  margin-top: 15px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid black;
+  margin-top: 7px;
+  @media (max-width: 640px) {
+    border-top: 5px solid black;
+    flex-direction: column;
+    background-color: white;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 9px solid black;
+    margin-top: 15px;
+  }
 `;
 
 export const ListLi = styled.li`

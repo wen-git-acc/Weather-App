@@ -12,7 +12,6 @@ const mcLarenFont = McLaren({
   subsets: ['latin'],
   weight: '400',
 });
-const weatherImageSize = 300;
 
 const IconAnimation = keyframes`
 0% {
@@ -54,6 +53,7 @@ const IconDiv = styled.div`
   @media (max-width: 640px) {
     width: 95%;
     height: 45%;
+    padding-top: 5%;
   }
 `;
 
@@ -85,6 +85,19 @@ const WeatherDescriptionDiv = styled.div`
     font-size: 15px;
   }
 `;
+
+const WeatherIconDiv = styled.div`
+  position: relative;
+  width: 300px;
+  height: 300px;
+  @media (max-width: 640px) {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: 30%;
+  }
+`;
+
 const TemperatureDiv = styled.div`
   position: relative;
   font-size: 30px;
@@ -124,17 +137,6 @@ const TimeDateDiv = styled.div`
   }
 `;
 
-const WeatherIconDiv = styled.div`
-  position: relative;
-  width: 300px;
-  height: 300px;
-  @media (max-width: 640px) {
-    width: 150px;
-    height: 150px;
-    position: absolute;
-    top: 30%;
-  }
-`;
 export default function CurrentDaySummaryDisplay({
   selectedDayData,
 }: PropType) {
@@ -158,7 +160,7 @@ export default function CurrentDaySummaryDisplay({
           {weatherDescription}
         </WeatherDescriptionDiv>
         <WeatherIconDiv>
-          <Image src={'https:' + imageUrl} alt="Image" fill object-fit />
+          <Image src={'https:' + imageUrl} alt="Image" fill object-fit="true" />
         </WeatherIconDiv>
       </IconDiv>
       <ContentDiv>

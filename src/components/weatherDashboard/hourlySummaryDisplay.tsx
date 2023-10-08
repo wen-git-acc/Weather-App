@@ -33,8 +33,6 @@ const DisplayDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  // // background-color: rgb(5, 10, 48, 0.9);
-  // background-color: rgb(255, 255, 255, 0.6);
   border-top-right-radius: ${() => dashBoardElementBorderRadius};
   border-radius: ${() => dashBoardElementBorderRadius};
   @media (max-width: 640px) {
@@ -134,7 +132,6 @@ export default function HourlySummaryDisplay({
                 height={weatherImageSize}
                 width={weatherImageSize}
               />
-
               <TemperatureDiv>
                 {temperatureC}&deg;C/{temperatureF}&deg;F
               </TemperatureDiv>
