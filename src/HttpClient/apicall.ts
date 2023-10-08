@@ -7,7 +7,7 @@ export async function locationSearchRequest(
   const locationApiKey: string = process.env
     .NEXT_PUBLIC_LOCATION_API_KEY as string;
   const limitParams = 5;
-  const requestUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${locationName}&limit=${limitParams}&appid=${locationApiKey}`;
+  const requestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${locationName}&limit=${limitParams}&appid=${locationApiKey}`;
 
   let locationDataReceived = [] as reqeustedLocationDataType;
 
