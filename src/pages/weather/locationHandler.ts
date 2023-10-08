@@ -36,7 +36,6 @@ export async function locationExcelReader(
           lat: info.lat,
           long: info.lng,
           country: info.country,
-          city: info.city,
           name: info.city + ', ' + info.country,
         } as sortedCitiesCountriesDataType;
       });

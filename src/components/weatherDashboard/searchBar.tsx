@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { dashBoardElementBorderRadius } from './dashboard';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import {
   keyEventObjType,
   keyEventType,
   sortedCitiesCountriesDataType,
 } from '@/pages/weather/typeConfig';
+import { locationSearchRequest } from '@/pages/weather/HttpClient/apicall';
 
 const SearcBarDiv = styled.div`
   height: 5%;
@@ -35,8 +36,10 @@ const SearchInput = styled.input`
   padding-left: 20px;
   border-radius: ${() => dashBoardElementBorderRadius};
   transition: width 0.5s linear;
-  &:focus {
-    width: 500px;
+  @media (min-width: 640px) {
+    &:focus {
+      width: 500px;
+    }
   }
 `;
 
@@ -48,11 +51,11 @@ const AutoSuggestionDiv = styled.div`
   bottom: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 500px;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(255, 255, 255, 1);
+  background-color: rgb(255, 255, 255, 0.9);
   border-radius: 15px;
 `;
 
@@ -77,7 +80,6 @@ const keyEventObj: keyEventObjType = {
   Enter: 'Enter',
 };
 
-const returnArraySize = 10;
 type handleOnClickType = {
   e: React.MouseEvent<HTMLElement>;
   lat: number;
@@ -85,9 +87,7 @@ type handleOnClickType = {
   name: string;
 };
 export function SearchBar() {
-  const { forCityCountryData, forSetWeatherDataNewLocation } =
-    useContext(WeatherContext);
-  const { citiesCountriesData } = forCityCountryData;
+  const { forSetWeatherDataNewLocation } = useContext(WeatherContext);
   const { setNewWeatherData } = forSetWeatherDataNewLocation;
   const [search, setSearch] = useState<string>('');
   const [filteredCitiesCountriesData, setFilteredData] = useState<
@@ -95,29 +95,63 @@ export function SearchBar() {
   >([] as sortedCitiesCountriesDataType[]);
   const [upDownKeyboardActionIndex, setUpDownKeyboardActionIndex] =
     useState<number>(-1);
-
+  const isUpdateFilter = useRef(false);
   function handleTypingChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const filteredData = citiesCountriesData
-      .filter((data) => data.name.toLowerCase().includes(search.toLowerCase()))
-      .slice(0, returnArraySize);
+    // const filteredData = citiesCountriesData
+    //   .filter((data) => data.name.toLowerCase().includes(search.toLowerCase()))
+    //   .slice(0, returnArraySize);
 
-    if (e.target.value) {
-      setFilteredData([...filteredData]);
-    } else {
-      setFilteredData([]);
-    }
-
+    // if (e.target.value) {
+    //   setFilteredData([...filteredData]);
+    // } else {
+    //   setFilteredData([]);
+    // }
+    isUpdateFilter.current = true;
     setSearch(e.target.value);
   }
 
+  useEffect(() => {
+    async function getLocationDetail() {
+      if (search && isUpdateFilter.current) {
+        const locationDataArr = await locationSearchRequest(search);
+
+        setFilteredData(
+          locationDataArr.map((data) => {
+            const name: string =
+              typeof data.name !== 'undefined' ? data.name + ', ' : '';
+            const state: string =
+              typeof data.state !== 'undefined' ? data.state + ', ' : '';
+            const country: string =
+              typeof data.country !== 'undefined' ? data.country : '';
+            return {
+              country: data.country,
+              lat: data.lat,
+              long: data.lng,
+              name: name + state + country,
+              state: data.state,
+            };
+          }),
+        );
+      }
+      if (!search) {
+        setFilteredData([]);
+      }
+    }
+    const userTypingTimeoutID = setTimeout(() => {
+      getLocationDetail();
+    }, 500);
+    return () => clearTimeout(userTypingTimeoutID);
+  }, [search]);
+
   function handleOnBlurEvent() {
+    isUpdateFilter.current = false;
     setFilteredData([]);
     setUpDownKeyboardActionIndex(-1);
   }
 
   function handleOnKeyDownEvent(e: React.KeyboardEvent<HTMLInputElement>) {
+    isUpdateFilter.current = false;
     const eventTriggered = e.key as keyEventType;
-
     if (
       keyEventObj.Up === eventTriggered &&
       upDownKeyboardActionIndex - 1 >= 0
@@ -168,7 +202,7 @@ export function SearchBar() {
 
   function handleOnClickEvent({ e, lat, long, name }: handleOnClickType) {
     e.preventDefault();
-
+    isUpdateFilter.current = false;
     setNewWeatherData(lat, long);
     setSearch(name);
     setFilteredData([]);

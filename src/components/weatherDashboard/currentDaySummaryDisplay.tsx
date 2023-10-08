@@ -37,48 +37,69 @@ const MainDiv = styled.div`
   background-color: rgb(237, 228, 227, 0.5);
   border-radius: ${() => dashBoardElementBorderRadius};
   display: flex;
+  align-items: center;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 const IconDiv = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
-  padding-top: ;
+  padding-top: 15%;
   width: 50%;
   position: relative;
   align-items: center;
-  justify-content: center;
   animation: ${IconAnimation} 4s linear infinite;
+  @media (max-width: 640px) {
+    width: 95%;
+    height: 45%;
+  }
 `;
 
 const ContentDiv = styled.div`
+  position: relative;
   height: 100%;
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding-top: 2%;
-  // background-color: rgb(5, 10, 48, 0.9);
   background-color: rgb(255, 255, 255, 0.6);
   border-top-right-radius: ${() => dashBoardElementBorderRadius};
   border-radius: ${() => dashBoardElementBorderRadius};
-`;
-
-const TemperatureDiv = styled.div`
-  position: relative;
-  font-size: 70px;
-  margin-top: 15%;
-  color: black;
-  margin-left: auto;
-  margin-right: auto;
-  left: 3%;
-  font-weight: bold;
+  @media (max-width: 640px) {
+    width: 95%;
+    height: 50%;
+    background-color: transparent;
+  }
 `;
 
 const WeatherDescriptionDiv = styled.div`
   position: relative;
   font-size: 20px;
-
   font-weight: bold;
+  heigth: 10%;
+  @media (max-width: 640px) {
+    font-size: 15px;
+  }
+`;
+const TemperatureDiv = styled.div`
+  position: relative;
+  font-size: 30px;
+  color: black;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+  @media (max-width: 1200px) and (min-width: 640px) {
+    font-size: 30px;
+  }
+  @media (max-width: 640px) {
+    font-size: 20px;
+    left: 0%;
+    top: 0%;
+  }
 `;
 
 const LocationNameDiv = styled.div`
@@ -87,13 +108,32 @@ const LocationNameDiv = styled.div`
   top: -2%;
   font-weight: bold;
   color: grey;
+  @media (max-width: 640px) {
+    top: 0%;
+  }
 `;
 const TimeDateDiv = styled.div`
   font-size: 25px;
   position: relative;
   font-weight: bold;
   color: black;
-  top: 5%;
+  @media (max-width: 640px) {
+    font-size: 20px;
+    margin-top: 0%;
+    top: 0%;
+  }
+`;
+
+const WeatherIconDiv = styled.div`
+  position: relative;
+  width: 300px;
+  height: 300px;
+  @media (max-width: 640px) {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: 30%;
+  }
 `;
 export default function CurrentDaySummaryDisplay({
   selectedDayData,
@@ -117,12 +157,9 @@ export default function CurrentDaySummaryDisplay({
         <WeatherDescriptionDiv className={mcLarenFont.className}>
           {weatherDescription}
         </WeatherDescriptionDiv>
-        <Image
-          src={'https:' + imageUrl}
-          alt="Image"
-          height={weatherImageSize}
-          width={weatherImageSize}
-        />
+        <WeatherIconDiv>
+          <Image src={'https:' + imageUrl} alt="Image" fill object-fit />
+        </WeatherIconDiv>
       </IconDiv>
       <ContentDiv>
         <TemperatureDiv className={mcLarenFont.className}>

@@ -16,12 +16,15 @@ const DashBoardDiv = styled.div`
   top: ${positionOfDashboardFromTop};
   margin: 10px;
   padding: 10px;
-  height: 1000px;
-  min-width: 1500px;
+  height: 1200px;
+  min-width: 350px;
   width: 1500px;
-  background-color: rgb(255, 255, 255, 0.5);
+
   border-radius: ${dashBoardElementBorderRadius};
   position: relative;
+  @media (max-width: 640px) {
+    background-color: transparent;
+  }
 `;
 
 const ContentSectionDiv = styled.div`
@@ -32,6 +35,9 @@ const ContentSectionDiv = styled.div`
   width: 100%;
   border-radius: ${dashBoardElementBorderRadius};
   display: flex;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const CurrentDaySectionDiv = styled.div`
@@ -42,11 +48,17 @@ const CurrentDaySectionDiv = styled.div`
   width: ${currentDaySection};
   gap: 1%;
   padding: 1%;
+  @media (max-width: 640px) {
+    width: 100%;
+  }
 `;
 const ForecastDaySectionDiv = styled.div`
   height: 100%;
   width: calc(100% - ${currentDaySection});
   padding: 1%;
+  @media (max-width: 640px) {
+    width: 100%;
+  }
 `;
 
 export function WeatherDashboard() {

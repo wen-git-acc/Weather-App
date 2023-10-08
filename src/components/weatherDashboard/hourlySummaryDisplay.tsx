@@ -27,9 +27,9 @@ const MainDiv = styled.div`
 
 const DisplayDiv = styled.div`
   height: 100%;
-  width: 180px;
+  width: 90%;
   display: flex;
-  flex-shrink: 0;
+  flex-shrink: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -37,6 +37,10 @@ const DisplayDiv = styled.div`
   // background-color: rgb(255, 255, 255, 0.6);
   border-top-right-radius: ${() => dashBoardElementBorderRadius};
   border-radius: ${() => dashBoardElementBorderRadius};
+  @media (max-width: 640px) {
+    background-color: rgb(255, 255, 255, 0.6);
+    flex-shrink: 1;
+  }
 `;
 
 const TemperatureDiv = styled.div`
@@ -72,18 +76,36 @@ const HeadingDiv = styled.h1`
   margin-right: auto;
   font-weight: bold;
   font-size: 25px;
+  @media (max-width: 640px) {
+    font-size: 15px;
+  }
 `;
 
 const ContentDiv = styled.div`
-  height: 95%;
+  height: 90%;
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   position: relative;
   overflow-x: scroll;
+  align-items: center;
   gap: 30px;
   border-radius: ${() => dashBoardElementBorderRadius};
+  &::-webkit-scrollbar {
+    height: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ede4e3;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
 `;
 export default function HourlySummaryDisplay({
   hourlyDataArr,

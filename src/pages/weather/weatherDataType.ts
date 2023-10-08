@@ -384,6 +384,7 @@ export const weatherForecastData = {
             gust_kph: 7.9,
             uv: 1.0,
             air_quality: {
+              // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
               co: 974.7000122070312,
               no2: 7.599999904632568,
               o3: 0.0,
@@ -2595,6 +2596,7 @@ export const weatherForecastData = {
             gust_kph: 11.2,
             uv: 1.0,
             air_quality: {
+              // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
               co: 787.7000122070312,
               no2: 18.700000762939453,
               o3: 6.400000095367432,
@@ -2693,6 +2695,7 @@ export const weatherForecastData = {
             gust_kph: 9.4,
             uv: 1.0,
             air_quality: {
+              // eslint-disable-next-line @typescript-eslint/no-loss-of-precision
               co: 767.7000122070312,
               no2: 15.600000381469727,
               o3: 4.199999809265137,

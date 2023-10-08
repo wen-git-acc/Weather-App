@@ -21,12 +21,21 @@ export type citiesCountriesDataType = {
   populatom?: number;
 }[];
 
+export type reqeustedLocationDataType = {
+  name: string;
+  local_names?: object;
+  lat: number;
+  lng: number;
+  country: string;
+  state: string;
+}[];
+
 export type sortedCitiesCountriesDataType = {
-  city: string;
   country: string;
   lat: number;
   long: number;
   name: string;
+  state: string;
 };
 
 export const keyEventArr = ['ArrowUp', 'ArrowDown', 'Enter'] as const;

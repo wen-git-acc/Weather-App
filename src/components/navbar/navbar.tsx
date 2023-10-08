@@ -7,17 +7,19 @@ import { MobileListDivProps } from './navbarTypeConfig';
 import HamburgerButton from './hamburgerButton';
 
 const LogoDiv = styled.div`
-  height: 100%;
+  height: 54px;
   width: 64px;
   margin: 0px;
   padding: 10px;
   display: inline-block;
   position: relative;
   padding: 10px;
+  left: 10px;
+  top: 5px;
   text-align: center;
   justify-content: center;
   cursor: crosshair;
-  background-color: blue;
+  background-color: transperant;
   z-index: 50;
 `;
 
@@ -56,7 +58,7 @@ const MobileListDiv = styled.div<MobileListDivProps>`
   transition: transform 0.5s linear;
   display: none;
   transform: ${(props) =>
-    props.isMenuTriggered ? 'translateX(0vw)' : 'translateX(-100vw)'};
+    props.isMenuTriggered ? 'translateX(0vw)' : 'translateX(-150vw)'};
 
   background-color: white;
   @media (max-width: 640px) {

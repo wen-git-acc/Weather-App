@@ -40,7 +40,7 @@ const MainDiv = styled.div`
 const DisplayDiv = styled.div`
   position: relative;
   height: 175px;
-  width: 350px;
+  width: 90%;
   display: flex;
   flex-shrink: 0;
   flex-direction: row;
@@ -92,6 +92,9 @@ const HeadingDiv = styled.h1`
   margin-right: auto;
   font-weight: bold;
   font-size: 25px;
+  @media (max-width: 640px) {
+    font-size: 15px;
+  }
 `;
 
 const ContentDiv = styled.div`
@@ -104,6 +107,20 @@ const ContentDiv = styled.div`
   align-items: center;
   border-radius: ${() => dashBoardElementBorderRadius};
   gap: 20px;
+  &::-webkit-scrollbar {
+    height: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ede4e3;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
 `;
 
 const IconDiv = styled.div`

@@ -14,6 +14,7 @@ import {
   useState,
 } from 'react';
 import axios from 'axios';
+
 type weatherContextType = {
   forLocation: {
     location: locationType;

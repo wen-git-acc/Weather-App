@@ -1,19 +1,15 @@
 import { useContext, useEffect } from 'react';
-import { citiesCountriesDataType } from './typeConfig';
-import { getUserLocation, locationExcelReader } from './locationHandler';
+import { getUserLocation } from './locationHandler';
 import styled from 'styled-components';
-import skycloud from './picture/skycloud.gif';
+import skycloud from './picture/blackpicture.webp';
 import { WeatherDashboard } from '@/components/weatherDashboard/dashboard';
 import { initialWeatherDataType } from './weatherDataType';
 import { WeatherContext } from '@/context/weatherContext/weatherContext';
 import axios from 'axios';
-import * as XLSX from 'xlsx';
-import { GetStaticProps, InferGetServerSidePropsType } from 'next';
-import path from 'path';
 
 const MainDiv = styled.div`
   position: relative;
-  height: 100%;
+  height: 100vh;
   width: 100%;
 `;
 
@@ -36,48 +32,7 @@ const ContentDiv = styled.div`
   justify-content: center;
 `;
 
-const citiesCountriesExcelFilePath = './countriesandcities.xlsx';
-export const getStaticProps: GetStaticProps<{
-  countriesCitiesDataArr: citiesCountriesDataType;
-}> = async () => {
-  const dirCom = path.resolve('./public');
-
-  const absolute = path.join(dirCom, 'countriesandcities.xlsx');
-  const res = XLSX.readFile(absolute);
-  const wsName = res.SheetNames[0];
-  const ws = res.Sheets[wsName];
-  const data: citiesCountriesDataType = XLSX.utils.sheet_to_json(
-    ws,
-  ) as citiesCountriesDataType;
-
-  // console.log(res);
-
-  let countriesCitiesDataArr = data.map((info) => {
-    const newObject = {
-      country: info.country,
-      city: info.city,
-      lat: info.lat,
-      lng: info.lng,
-    };
-    return newObject;
-  });
-
-  countriesCitiesDataArr = [
-    {
-      country: 'asdsa',
-      city: 'asd',
-      lat: 12,
-      lng: 12,
-    },
-  ];
-
-  return { props: { countriesCitiesDataArr } };
-};
-
-export default function WeatherHome({
-  countriesCitiesDataArr,
-}: InferGetServerSidePropsType<typeof getStaticProps>) {
-  console.log(countriesCitiesDataArr);
+export default function WeatherHome() {
   const weatherApiUrl: string = process.env
     .NEXT_PUBLIC_WEATHER_API_URL as string;
 
@@ -91,46 +46,10 @@ export default function WeatherHome({
     useContext(WeatherContext);
   const { location, setLocation } = forLocation;
   const { weatherData, setWeatherData } = forWeatherData;
-  const { setCitiesCountriesData } = forCityCountryData;
-  // const [nice, setNice] = useState(0);
-  // const [testing, setTesting] = useState<weatherDataType>({});
-  // async function Testing2(
-  //   data: GeolocationPosition,
-  // ): Promise<GeolocationCoordinates> {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       const tryingdata: GeolocationCoordinates = data.coords;
-  //       resolve(tryingdata);
-  //     }, 5000);
-  //   });
-  // }
-  // async function Testing() {
-  //   try {
-  //     const positionTest: GeolocationPosition = await getUserLocation();
-  //     console.log('Hiaaa00');
-  //     const test2data = await Testing2(positionTest);
-  //     console.log(test2data);
-  //   } catch (err) {}
-  // }
-
-  // function forTestButton(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-  //   e.preventDefault();
-  //   console.log('TestButton');
-  //   setNice((prev: number) => prev + 1);
-  //   setLocation((prevLocation) => {
-  //     return {
-  //       ...prevLocation,
-  //       lat: prevLocation.lat + 1,
-  //     };
-  //   });
-  // }
 
   useEffect(() => {
     async function weatherDataInitialization() {
       try {
-        const citiesCountriesDataArr = await locationExcelReader(
-          citiesCountriesExcelFilePath,
-        );
         const position: GeolocationPosition = await getUserLocation();
         const coordinate: GeolocationCoordinates = position.coords;
         //TODO: pass coordinate to weather api to get weather data, for now use dummy data
@@ -139,10 +58,6 @@ export default function WeatherHome({
           lat: coordinate.latitude,
           long: coordinate.longitude,
         }));
-        setCitiesCountriesData((prevData) => [
-          ...prevData,
-          ...citiesCountriesDataArr,
-        ]);
 
         const res = await axios.get(
           `${weatherApiUrl}&q=${coordinate.latitude},${coordinate.longitude}`,
@@ -179,6 +94,8 @@ export default function WeatherHome({
         } else {
           message = String(error);
         }
+        // eslint-disable-next-line no-console
+        console.warn(message);
       }
     }
 
@@ -196,9 +113,11 @@ export default function WeatherHome({
           });
         })
         .catch((err: GeolocationPositionError) => {
+          // eslint-disable-next-line no-console
           console.warn(`ERROR(${err.code}): ${err.message}`);
         });
     } else {
+      // eslint-disable-next-line no-console
       console.warn('Browser does not support geolocation api');
     }
   }, []);
